@@ -4,6 +4,7 @@ import { Functions } from './typescript/Functions'
 import { Counter } from './components/Counter'
 import { CountHook } from './components/CountHook'
 import { Login } from './components/Login'
+import { Users } from './components/Users'
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
       <Counter />
       <CountHook />
       <Login />
+      <Users />
     </div>
   )
 }
