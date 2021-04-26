@@ -8,7 +8,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  validate: true,
+  validate: false,
   token: null,
   userName: '',
   name: ''
@@ -78,18 +78,10 @@ export const Login = () => {
 
   const logout = () => dispatch({ type: 'logout' })
 
-  if (validate) {
-    return (
-      <>
-        <h3>Login</h3>
-        <div className='alert alert-info'>Validating...</div>{' '}
-      </>
-    )
-  }
-
   return (
     <>
       <h3>Login</h3>
+      {validate && <div className='alert alert-info'>Validating...</div>}
       {token ? (
         <div className='alert alert-success'>Welcome as: {name}</div>
       ) : (

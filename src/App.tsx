@@ -5,6 +5,7 @@ import { Counter } from './components/Counter'
 import { CountHook } from './components/CountHook'
 import { Login } from './components/Login'
 import { Users } from './components/Users'
+import { Forms } from './components/Forms'
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
       <CountHook />
       <Login />
       <Users />
+      <Forms />
     </div>
   )
 }
