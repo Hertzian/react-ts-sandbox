@@ -1,18 +1,59 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { reqResApi } from '../api/reqRes'
 import { ReqResList, Users as Us } from '../interfaces/reqRes'
 
 export const Users = () => {
-  const [users, setUsers] = useState<Us>([])
+  const [users, setUsers] = useState<Us[]>([])
+  const pageRef = useRef(1)
+  console.log('refff', pageRef)
 
   useEffect(() => {
-    reqResApi
-      .get<ReqResList>('/users')
-      .then((res) => {
-        console.log(res.data.data)
-      })
-      .catch(console.log('error'))
+    loadUsers()
   }, [])
+
+  const userReq = async () => {
+    try {
+      const res = await reqResApi.get<ReqResList>('/users', {
+        params: { page: pageRef.current }
+      })
+
+      //console.log(res.data.data)
+      return res.data.data
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const loadUsers = async () => {
+    const res: any = await userReq()
+
+    if (res.length >= 1) {
+      setUsers(res)
+      pageRef.current++
+    }
+    if (res.length === 0) {
+      console.log('no more  registers')
+      return
+    }
+
+    setUsers(res)
+  }
+
+  const UserItem = ({ id, avatar, first_name, email }: Us) => {
+    return (
+      <tr key={id.toString()}>
+        <td>
+          <img
+            style={{ width: 50, borderRadius: 100 }}
+            src={avatar}
+            alt={first_name}
+          />
+        </td>
+        <td>{first_name}</td>
+        <td>{email}</td>
+      </tr>
+    )
+  }
 
   return (
     <>
@@ -25,8 +66,11 @@ export const Users = () => {
             <th>email</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>{users.map((user: Us) => UserItem(user))}</tbody>
       </table>
+      <button className='btn btn-primary ms-4' onClick={loadUsers}>
+        Next
+      </button>
     </>
   )
 }
